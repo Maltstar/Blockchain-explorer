@@ -8,7 +8,7 @@ only retrieving height, hash and block time .
 
 # To start the app:
  0 - Install python3 <br />
- 1 - Install Flask: pip install Flask <br /> (linux)
- 2 - Install virtual environment: python3 -m venv venv <br /> (linux)
- 3 -  activate virtual environment: . venv/bin/activate <br /> (linux)
- 4 - start the app using %run app.py <br /> (linux)
+ 1 - Install Flask: pip install Flask (linux) <br /> 
+ 2 - Install virtual environment: python3 -m venv venv (linux) <br />
+ 3 -  activate virtual environment: . venv/bin/activate (linux) <br />
+ 4 - start the app using %run app.py (linux) <br />
