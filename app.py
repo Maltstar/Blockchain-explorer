@@ -3,9 +3,6 @@
 # as for now 13.06.2022, this blockchain explorer is only able to fetch data on transactions
 # and wallet addres, the chainz api does not provide yet full information about a block
 # only retrieving height, hash and block time 
-
-from multiprocessing.sharedctypes import Value
-from unittest import case
 from time import sleep
 # Markup to render html element in template
 
