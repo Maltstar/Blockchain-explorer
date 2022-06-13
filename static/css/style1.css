@@ -1,0 +1,94 @@
+
+@font-face {
+       font-family: 'Magneto Bold';
+        font-style: normal;
+        font-weight: normal;
+        src: local('Magneto Bold'), url('MAGNETOB.woff') format('woff');
+     }
+
+
+:root{
+    --color-1 : #CC66FF;
+    --color-2 : #33CCFF; 
+    --color-3 : rgb(37,46, 116); 
+    --color-4 : #000033; 
+}
+
+body{
+    background-color: var(--color-3);
+
+}
+
+#wrapper{
+    width: 1200px; 
+    margin: auto; 
+    position : relative; 
+    
+}    
+
+h1, .popup
+{
+    text-align: center;
+    font-family: 'Magneto Bold', 'Impact' ;
+    font-size: 4rem ;
+    margin: 0;
+    color : var(--color-2); 
+    text-decoration: underline double var(--color-1);
+    text-shadow: 2px 2px 15px var(--color-1) ;
+}
+
+#canvas
+{
+    border: solid 1px rgb(5, 5, 7);
+    background-color:rgb(28,28, 52); 
+    _background-image: "/img/universe_blue.jpg";
+    margin : auto; 
+    
+    _position:relative;
+    z-index:20;
+}
+
+#livescounter{
+    width: fit-content;
+    margin: 2rem 0;
+    padding: 2rem ; 
+    border: double var(--color-2);
+    font-family: 'Magneto Bold', 'Impact' ;
+    font-size: 2rem;
+    color: var(--color-1);
+    text-shadow: 2px 2px 15px var(--color-2) ;
+    position : relative; 
+    right: -20%;
+    
+}
+
+#nivo
+{   
+    width: fit-content;
+    margin: 2rem auto;
+    padding: 2rem ; 
+    _border: double var(--color-2);
+    font-family: 'Magneto Bold', 'Impact' ;
+    font-size: 2rem;
+    color: var(--color-2);
+    text-shadow: 2px 2px 15px var(--color-1) ;
+    position: absolute; 
+    right: 0; 
+    top : 8rem ; 
+}
+
+#btn{
+    margin: 2rem auto;
+    width: fit-content;
+}
+ #start-stop, #sound-on{
+   
+    text-align: center;
+    padding: 2rem ; 
+    border: double var(--color-2);
+    font-family: 'Magneto Bold', 'Impact' ;
+    font-size: 2rem;
+    color: var(--color-1);
+    background: none;  
+    text-shadow: 2px 2px 15px var(--color-2) ;
+}
