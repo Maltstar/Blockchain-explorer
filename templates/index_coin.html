@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchains Explorer</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <center>
+        <!-- <img src="/static/images/cimdata.jpg" width="300"> -->
+        <h1>{{coin}}</h1>
+        <br><br><br>
+        <form action="{{ dataToRender }}" method="POST">
+            <label>Transaction Hash</label>
+            <input type="text" name="transaction" placeholder="Bitte Transaction Hash eintragen">
+            <button type="submit">Abschicken</button>
+            <br>
+            <label>Wallet address Hash</label>
+            <input type="text" name="address" placeholder="Bitte Address Hash eintragen">
+            <button type="submit">Abschicken</button>
+            <br>
+        </form>
+    </center>
+
+    <!-- redirect user to a game (to /templates/index.html then to /static/index.html  ) 
+    once the link is clicked from the url http://127.0.0.1:5000/blockchain/<coin> 
+     redirecting to http://127.0.0.1:5000/static/index.html   -->
+     <a href="/static/index_game.html">play Game <br></a>
+     <a href="/">Return to coin list</a>
+    <center>
+        <div id="error">{{no_matches}}</div>
+        <div id="result">{{result}}</div>
+    </center>
+
+
+</body>
+</html>
