@@ -57,7 +57,7 @@ def blockchain(coin):
     # for compatibility with the api, the api takes only lower case crypto name
     coin = coin.lower() 
 
-    global result
+   # global result
     result = ""
     global url_action
     # redirect to route manager when the user send the input data
@@ -78,9 +78,10 @@ def blockchain(coin):
 @app.route("/blockchain/<coin>/transaction/<tx>", methods= ["GET", "POST"])
 def transaction(coin,tx):
 
-    #global result
+    # initialize results
     result = ""
     error_result = ""
+    # for POST request dont display data
     if request.method == "GET":
         response_data = fetch_and_format_cryptos_data(coin,tx,'t')
         result = response_data['result']
@@ -95,8 +96,10 @@ def transaction(coin,tx):
 @app.route("/blockchain/<coin>/wallet/<wallet_address>", methods= ["GET", "POST"])
 def address(coin,wallet_address):
 
-    global result
+   # initialize results
     result = ""
+    error_result = ""
+    # for POST request dont display data
     if request.method == "GET":
         response_data = fetch_and_format_cryptos_data(coin,wallet_address,'w')
         result = response_data['result']
