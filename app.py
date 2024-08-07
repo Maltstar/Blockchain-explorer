@@ -3,12 +3,15 @@
 # as for now 13.06.2022, this blockchain explorer is only able to fetch data on transactions
 # and wallet addres, the chainz api does not provide yet full information about a block
 # only retrieving height, hash and block time 
-from time import sleep
+#from time import sleep
 # Markup to render html element in template
 
 from flask import Flask, render_template, request, Markup, redirect
 import json
-from fetch_data import fetch_and_format_cryptos_data
+from fetch_data import fetch_and_format_cryptos_data, fetch_symbols, update_coin_list
+from format import format_coin_list
+from waitress import serve
+
 
 
 
@@ -21,7 +24,14 @@ url_action = ""
 # Routing für Home
 @app.route("/")
 def home():
-    return render_template("index.html")
+    # fetch symbols from chainz api and update main coin lists with it
+    cryptos = update_coin_list()
+    # update coins list with fetched symbols
+    return render_template("index.html", coin_list=format_coin_list(cryptos))
+
+@app.route("/symbols_summary")
+def symbols():
+    return fetch_symbols()
 
 # manage input sent by user and redirect to the appropriate page accordingly
 @app.route("/blockchain/redirect/<coin>", methods= ["GET", "POST"])
@@ -53,7 +63,7 @@ def redirect_route(coin):
 @app.route("/blockchain/<coin>", methods= ["GET", "POST"])
 def blockchain(coin):
 
-    print('HI, FUnction BLOCKCHAIN')
+    #print('HI, FUnction BLOCKCHAIN')
     # for compatibility with the api, the api takes only lower case crypto name
     coin = coin.lower() 
 
@@ -69,7 +79,7 @@ def blockchain(coin):
     # the inputs data when the formular has been filled and the data sent by a click of the button
     url_action = "/blockchain/redirect/" + coin
 
-    print('url_action',url_action)
+    #print('url_action',url_action)
     # zeige das Formular an
     return render_template("index_coin.html",dataToRender=url_action,result=result,coin=coin.upper())
 
@@ -110,4 +120,5 @@ def address(coin,wallet_address):
 
 
 # Server starten
-app.run()
+#app.run()
+serve(app, host="127.0.0.1", port=5000)

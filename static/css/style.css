@@ -23,6 +23,10 @@ a{
     color: yellow;
 }
 
+#coins_list{
+    list-style-type: none;
+}   
+
 #wrapper{
     width: 1200px; 
     margin: auto; 

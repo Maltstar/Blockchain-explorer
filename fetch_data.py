@@ -1,8 +1,8 @@
-from wrapper_chainz_api import build_url_tx, build_url_wl
+from wrapper_chainz_api_backend import build_url_tx, build_url_wl, my_Crypto
 from format import format_results
 import requests
 from transaction import Transaction
-from flask import Markup
+from flask import Markup, Response, json
 from time import sleep
 
 
@@ -44,6 +44,7 @@ def fetch_cryptos_data(transaction_url):
         
 
         # collection json object from the reponse
+        print('transation_data',transation_data)
         dict_data = transation_data.json()
 
         # create a class from the json fetched data
@@ -52,6 +53,7 @@ def fetch_cryptos_data(transaction_url):
         # 2- dynamically display the key/value pair as html elements
         # without having to code manually an html element per value key/pair 
         my_crypto = Transaction(dict_data)
+        #my_crypto = {}
         #checking response
         if my_crypto.__dict__ != {}:
             break
@@ -64,3 +66,42 @@ def fetch_cryptos_data(transaction_url):
     # build a response with crypto data fetched and built-in error message
     response = {'crypto_data':my_crypto,'error':no_matches}    
     return response
+
+def fetch_summary():
+    # see documentation at https://chainz.cryptoid.info/api.dws 
+    url_chain_api_summary = "https://chainz.cryptoid.info/explorer/api.dws?q=summary"
+    # Make a request to the JSON Placeholder API
+    summary = requests.get(url_chain_api_summary)
+    data = summary.json() 
+    return data
+
+# fetch summary and return it as http response
+def fetch_symbols():
+
+    # # see documentation at https://chainz.cryptoid.info/api.dws 
+    # url_chain_api_summary = "https://chainz.cryptoid.info/explorer/api.dws?q=summary"
+    # # Make a request to the JSON Placeholder API
+    # summary = requests.get(url_chain_api_summary)
+    # data = summary.json()
+    
+    data = fetch_summary()
+    # setup body of the response
+    resp = Response(response=json.dumps(data),status=200)
+    # setup header to allow CORS for anyon
+    #print("resp.data",resp.data)
+    #json_resp_data = resp.data.json()
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    #print('response',resp)
+   
+    return resp
+
+def update_coin_list():
+    
+    # Object is of form { "crypto name":symbol}
+    crypto_symbols = {}
+    symbols = fetch_summary()
+    for symbol, value in symbols.items():
+        crypto_symbols[symbol] = value["name"]
+    my_Crypto.set(crypto_symbols)
+    print('my_Crypto',my_Crypto.crypto_symbols)
+    return my_Crypto

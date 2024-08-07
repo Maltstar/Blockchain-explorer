@@ -4,19 +4,99 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A blockchains explorer for transaction and wallets address powered by https://chainz.cryptoid.info/">
     <title>Blockchains Explorer</title>
     <link rel="stylesheet" href="static/css/style.css">
+    <link rel="preload" href="https://pyscript.net/" />
+    <script  onload="console.log(`${pyscript.version}`)" src="https://pyscript.net/latest/pyscript.js" defer >  </script>
 </head>
 <body>
     <div id="wrapper">
     <h1> Blockchains Explorer </h1>
 </div>
     <!-- Javascript embedded as last element in body style="background: url('/img/universe_blue.jpg')"" -->
-    <script src ="static/js/index_cryptos.js"></script>
+    <!-- <script src ="static/js/index_cryptos.js"></script> -->
+    
     <center>
+        <div>
+            <input type=text id=coin_filter name=coin_filter placeholder="type to filter coins"  >
+            <ul id="coins_list">
+                {{ coin_list }}
+            </ul>
+            
+        </div>
         <strong><a id="chainz" href="https://chainz.cryptoid.info/">api provided by cryptoid.info</a> <br></strong>
         <strong id="flask">powered by flask</strong>
+        <py-config style="display:none">
+            packages = ["requests", "pyodide-http"]
+            [[fetch]]
+            from = 'static/'
+            files = ["wrapper_chainz_api.py"]
+            
+        </py-config>
+        <py-script >
+import pyodide
+import time
+import requests
+import pyodide_http
+import wrapper_chainz_api
+            
+# Patch the Requests library so it works with Pyscript
+pyodide_http.patch_all()
+
+
+def fetch_symbols_from_server():
+    # as the server that serve the symbol summary at https://chainz.cryptoid.info/explorer/api.dws?q=summary
+    # has a no CORS policy, it is mandatory to fetch this data outside the browser, i.e in the server side
+    
+    base_url = "http://127.0.0.1:5000/"
+    url_symbols = base_url + "symbols_summary"
+    summary = requests.get(url_symbols)
+    summary_data = summary.json()
+    #print("summary_data",summary_data)
+    crypto_symbols = {}
+
+    # parsing list of symbols
+    # the symbols are formated under a object, where the key is the symbol and the value a list of attribute for that symbol
+    # {"1337":{"name":"Elite","PoW":"","PoS":true,"height":4175495,"diff":0.26897851,"supply":30073266748.7486,"ticker":{"btc":3.98216939078752E-10}},
+    # "42":{"name":"42-coin","PoW":"Scrypt","PoS":true,"height":348769,"diff":1.13975895,"supply":41.99995139,"ticker":{"btc":1.10018573551263}}
+    for key, value in summary_data.items():
+        crypto_symbols[key] = value["name"]
+    
+    wrapper_chainz_api.my_Crypto.set(crypto_symbols)
+    #print("crypto_symbols",wrapper_chainz_api.my_Crypto.crypto_symbols_filtered)
+
+
+def filter(e):
+    time.sleep(2)
+    search_me = js.document.getElementById('coin_filter')  
+    search =  search_me.value
+    root = "blockchain/"
+    wrapper_chainz_api.filter_coins(search)
+    list_coins = js.document.getElementById('coins_list') 
+    #print(list_coins)
+    # removing previous result
+    while list_coins.hasChildNodes(): 
+        list_coins.removeChild(list_coins.firstChild)
+    # appending new result
+    for symbol, name in wrapper_chainz_api.my_Crypto.crypto_symbols_filtered.items():
+        #print("name,symbol",name,symbol)
+        coin = js.document.createElement('li');
+        link = js.document.createElement('a');
+        link.href = root + symbol
+        link.text = name + ": " + symbol.upper()
+        # update li element with link
+        coin.appendChild(link)
+        # update ul with coin
+        list_coins.appendChild(coin)
+
+# add event on text input for character
+fetch_symbols_from_server()
+filter_me = js.document.getElementById('coin_filter')  
+filter_me.addEventListener('input', pyodide.ffi.create_proxy(filter) )
+        </py-script>
     </center>
+    
 
     
 

@@ -1,6 +1,6 @@
 from flask import Markup
 from router import manage_hyperlink
-
+#from wrapper_chainz_api import my_Crypto
 
 #################################################
 #   Format Response to HTML Elements Functions
@@ -67,3 +67,27 @@ def format_results(my_crypto_dict,coin,operator=""):
                 #print(result)
 
     return result
+
+
+
+
+
+def format_coin_list(my_Crypto):
+    # coin list
+    # url to attach to each coin blockchain/<coin>, e.g blockchain/btc
+    #list = Markup('<ul>')
+    list = ""
+    root = "blockchain/"
+    #print("format_coin_list, my_Crypto",my_Crypto.crypto_symbols_filtered)
+    # creating for each pair a link to the associated page
+    for symbol,name in my_Crypto.crypto_symbols_filtered.items():
+        list += Markup("<li>")
+        list += Markup(f"<a href={root}{symbol}>{name}: {symbol.upper()}</a>")
+        list += Markup("</li>")
+    # closing list
+    list += Markup("</ul>")
+    # closing container
+    #list += Markup('</div>')
+   # print("list",list)
+    return list
+

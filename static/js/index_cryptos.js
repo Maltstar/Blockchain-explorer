@@ -4,11 +4,6 @@ function myFunction() {
 
 
 
-function create_template_transaction()
-{
-    
-}
-
 cryptos_list = [
     "Bitcoin",
     "Ion",
@@ -430,12 +425,20 @@ function create_dropdown(element)
     menu = document.createElement('ul');
     root = "blockchain/";
    // const breakline = document.createElement('br')
-    for (let i=0;i<cryptos_list.length;i++)
+   function ignoreCase(a,b) {
+    return (''+a).toUpperCase() < (''+b).toUpperCase() ? -1 : 1;
+    }
+
+   const coins_list = cryptos_list.sort(ignoreCase);
+   const coins_symbol = cryptos_symbol.sort(ignoreCase);
+   console.log(coins_list)
+    for (let i=0;i<coins_list.length;i++)
     {
         //const li_el = document.createElement('li')
         const link = document.createElement('a')
-        link.href = root + cryptos_symbol[i]
-        link.innerHTML = cryptos_list[i] + "<br>"
+        //link.href = root + cryptos_symbol[i]
+        link.href = root + coins_symbol[i]
+        link.innerHTML = coins_list[i] + "<br>"
         menu.append(link)
        // menu.append(breakline)
     }
@@ -443,6 +446,7 @@ function create_dropdown(element)
     element.append(menu)
     
 }
+
 function main ()
 {
     // create a container for the list

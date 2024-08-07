@@ -11,4 +11,4 @@ only retrieving height, hash and block time .
  1 - Install Flask: pip install Flask (linux) <br /> 
  2 - Install virtual environment: python3 -m venv venv (linux) <br />
  3 -  activate virtual environment: . venv/bin/activate (linux) <br />
- 4 - start the app using %run app.py (linux) <br />
+ 4 - start the app using "flask run" (linux) <br />
